@@ -1,0 +1,1 @@
+trong router: để css cho the a có route active ta sd class .router-link-active

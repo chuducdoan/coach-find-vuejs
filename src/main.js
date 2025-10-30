@@ -1,14 +1,18 @@
 import { createApp } from "vue";
 import App from "./App.vue";
-import FriendContract from "./components/FriendContract.vue";
-import NewFriend from "./components/NewFriend.vue";
-import UserData from "./components/UserData.vue";
-import ActiveUser from "./components/ActiveUser.vue";
+import router from "./router";
+import store from "./store";
+import BaseCard from "./components/ui/BaseCard.vue";
+import BaseBadge from "./components/ui/BaseBadge.vue";
+import BaseButton from "./components/ui/BaseButton.vue";
 
 const app = createApp(App);
 
-app.component("friend-contract", FriendContract);
-app.component("new-friend", NewFriend);
-app.component("user-data", UserData);
-app.component("active-user", ActiveUser);
+app.use(router);
+app.use(store);
+
+app.component("base-card", BaseCard);
+app.component("base-badge", BaseBadge);
+app.component("base-button", BaseButton);
+
 app.mount("#app");
