@@ -1,1 +1,7 @@
 trong router: để css cho the a có route active ta sd class .router-link-active
+-animation cho route:
+ <router-view v-slot="slotProps">
+    <transition name="route" mode="out-in">
+      <component :is="slotProps.Component"></component>
+    </transition>
+  </router-view>

@@ -1,13 +1,56 @@
 export default {
-  registerCoach(context, data) {
+  async registerCoach(context, data) {
+    const userId = context.rootGetters["auth/userId"];
+    const token = context.rootGetters["auth/token"];
     const coachData = {
-      id: context.rootGetters.userId,
       firstName: data.first,
       lastName: data.last,
       description: data.desc,
       hourlyRate: data.rate,
       areas: data.areas,
     };
-    context.commit("registerCoach", coachData);
+    const response = await fetch(
+      `https://my-project-1554289997307-default-rtdb.asia-southeast1.firebasedatabase.app/coaches/${userId}.json?auth=${token}`,
+      {
+        method: "PUT",
+        body: JSON.stringify(coachData),
+      }
+    );
+    const responseData = await response.json();
+    if (!response.ok) {
+      console.log(responseData);
+    }
+    context.commit("registerCoach", { ...coachData, id: userId });
+  },
+
+  async loadCoaches(context, payload) {
+    if (!payload.forceRefresh && !context.getters.shouldUpdate) {
+      return;
+    }
+    const response = await fetch(
+      `https://my-project-1554289997307-default-rtdb.asia-southeast1.firebasedatabase.app/coaches.json`,
+      {
+        method: "GET",
+      }
+    );
+    const responseData = await response.json();
+    if (!response.ok) {
+      const error = new Error(responseData.message || "Failed to fetch!");
+      throw error;
+    }
+    const coaches = [];
+    for (const key in responseData) {
+      const coach = {
+        firstName: responseData[key].firstName,
+        lastName: responseData[key].lastName,
+        description: responseData[key].description,
+        hourlyRate: responseData[key].hourlyRate,
+        areas: responseData[key].areas,
+        id: key,
+      };
+      coaches.push(coach);
+    }
+    context.commit("setCoaches", coaches);
+    context.commit("setFetchTimestamp");
   },
 };
