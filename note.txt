@@ -5,3 +5,6 @@ trong router: để css cho the a có route active ta sd class .router-link-acti
       <component :is="slotProps.Component"></component>
     </transition>
   </router-view>
+
+
+  ---url du an: https://my-project-1554289997307.web.app/auth
